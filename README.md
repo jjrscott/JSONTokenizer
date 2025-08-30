@@ -51,3 +51,32 @@ JSONTokenizer doesn't handle `null`, booleans and numbers, it just captures them
 ```swift
 .array([.bareword("null"), .bareword("true"), .bareword("10e-30"), .bareword("0"), .bareword("0.0")])
 ```
+
+### Inside a regular expression
+
+JSONTokenizer can also be used directly in a regular expression as it conforms to RegexComponent.
+
+```swift
+let token = Reference(JSONToken.self)
+let regex = Regex {
+    "Hello"
+    OneOrMore(.whitespace)
+    Capture(as: token) {
+        JSONTokenizer()
+    }
+    OneOrMore(.whitespace)
+    "World"
+}
+
+let input = """
+Hello ["small", "big"] World
+"""
+
+let result = try regex.wholeMatch(in: input)
+
+print(result![token])
+```
+
+```swift
+.array([.string("small"), .string("big")])
+```

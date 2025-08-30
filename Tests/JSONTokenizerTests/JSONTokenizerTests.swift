@@ -1,5 +1,6 @@
 import Testing
 @testable import JSONTokenizer
+import RegexBuilder
 
 @Test func `Normal object`() async throws {
     let tokenizer = JSONTokenizer()
@@ -39,6 +40,27 @@ import Testing
     """
 
     #expect(try tokenizer.tokenize(input) == .array([.bareword("null"), .bareword("true"), .bareword("10e-30"), .bareword("0"), .bareword("0.0")]))
+}
+
+@Test func `Inside a regular expression`() async throws {
+let token = Reference(JSONToken.self)
+let regex = Regex {
+    "Hello"
+    OneOrMore(.whitespace)
+    Capture(as: token) {
+        JSONTokenizer()
+    }
+    OneOrMore(.whitespace)
+    "World"
+}
+
+let input = """
+Hello ["small", "big"] World
+"""
+
+    let result = try #require(try regex.wholeMatch(in: input))
+
+    #expect(result[token] == .array([.string("small"), .string("big")]))
 }
 
 func printJSONToken(token: JSONToken) {
