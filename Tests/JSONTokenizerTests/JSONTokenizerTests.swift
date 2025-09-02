@@ -63,6 +63,17 @@ Hello ["small", "big"] World
     #expect(result[token] == .array([.string("small"), .string("big")]))
 }
 
+@Test func `Single "`() async throws {
+    let tokenizer = JSONTokenizer()
+
+    let input = """
+        x"
+"""
+    #expect(throws: JSONTokenizationError.self) {
+        try tokenizer.tokenize(input)
+    }
+}
+
 func printJSONToken(token: JSONToken) {
     print(".\(token)".replacing("JSONTokenizer.JSONToken", with: ""))
 }

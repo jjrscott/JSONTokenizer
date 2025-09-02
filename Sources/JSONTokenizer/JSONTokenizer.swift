@@ -50,7 +50,7 @@ public struct JSONTokenizer {
         return value
     }
 
-    private let tokenRegex = /[\{\}\[\]\:\,]|"(?:\\.|[^"])*"|[^\s\{\}\[\]\:\,]+/.dotMatchesNewlines()
+    private let tokenRegex = /[\{\}\[\]\:\,]|"(?:\\.|[^"])*"|[^\s\{\}\[\]\:\,"]+/.dotMatchesNewlines()
 
     private func nextToken(expected: Set<Substring>? = nil, input: String, index: inout String.Index) throws(JSONTokenizationError) -> Substring {
         if index > input.endIndex {
