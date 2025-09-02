@@ -43,18 +43,18 @@ import RegexBuilder
 }
 
 @Test func `Inside a regular expression`() async throws {
-let token = Reference(JSONToken.self)
-let regex = Regex {
-    "Hello"
-    OneOrMore(.whitespace)
-    Capture(as: token) {
-        JSONTokenizer()
+    let token = Reference(JSONToken.self)
+    let regex = Regex {
+        "Hello"
+        OneOrMore(.whitespace)
+        Capture(as: token) {
+            JSONTokenizer()
+        }
+        OneOrMore(.whitespace)
+        "World"
     }
-    OneOrMore(.whitespace)
-    "World"
-}
 
-let input = """
+    let input = """
 Hello ["small", "big"] World
 """
 
